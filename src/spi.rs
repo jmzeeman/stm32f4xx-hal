@@ -364,6 +364,17 @@ pub enum Error {
     _Extensible,
 }
 
+/// Clock phase
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum SpiMasterInterface {
+    /// Both Miso and mosi are used
+    FullDuplex,
+    /// Only mosi pin is used, for both sending and receiving
+    HalfDuplex,
+    /// only miso is used for receiving
+    RxOnly,
+}
+
 pub trait Pins<SPI> {}
 pub trait PinSck<SPI> {}
 pub trait PinMiso<SPI> {}
@@ -743,6 +754,12 @@ impl<PINS> Spi<SPI1, PINS> {
     where
         PINS: Pins<SPI1>,
     {
+        spi1_ext(spi, pins, mode, freq, clocks, SpiInterface::FullDuplex);
+    }
+    pub fn spi1_ext(spi: SPI1, pins: PINS, mode: Mode, freq: Hertz, clocks: Clocks, interface: SpiInterface) -> Self
+    where
+        PINS: Pins<SPI1>,
+    {
         unsafe {
             const EN_BIT: u8 = 12;
             // NOTE(unsafe) this reference will only be used for atomic writes with no side effects.
@@ -752,7 +769,7 @@ impl<PINS> Spi<SPI1, PINS> {
             bb::set(&rcc.apb2enr, EN_BIT);
         }
 
-        Spi { spi, pins }.init(mode, freq, clocks.pclk2())
+        Spi { spi, pins }.init(mode, freq, clocks.pclk2(), interface)
     }
 }
 
@@ -780,6 +797,12 @@ impl<PINS> Spi<SPI2, PINS> {
     where
         PINS: Pins<SPI2>,
     {
+        spi2_ext(spi, pins, mode, freq, clocks, SpiInterface::FullDuplex);
+    }
+    pub fn spi2_ext(spi: SPI2, pins: PINS, mode: Mode, freq: Hertz, clocks: Clocks, interface: SpiInterface) -> Self
+    where
+        PINS: Pins<SPI2>,
+    {
         unsafe {
             const EN_BIT: u8 = 14;
             // NOTE(unsafe) this reference will only be used for atomic writes with no side effects.
@@ -789,7 +812,7 @@ impl<PINS> Spi<SPI2, PINS> {
             bb::set(&rcc.apb1enr, EN_BIT);
         }
 
-        Spi { spi, pins }.init(mode, freq, clocks.pclk1())
+        Spi { spi, pins }.init(mode, freq, clocks.pclk1(), interface)
     }
 }
 
@@ -816,6 +839,12 @@ impl<PINS> Spi<SPI3, PINS> {
     where
         PINS: Pins<SPI3>,
     {
+        spi3_ext(spi, pins, mode, freq, clocks, SpiInterface::FullDuplex);
+    }
+    pub fn spi3_ext(spi: SPI3, pins: PINS, mode: Mode, freq: Hertz, clocks: Clocks, interface: SpiInterface) -> Self
+    where
+        PINS: Pins<SPI3>,
+    {
         unsafe {
             const EN_BIT: u8 = 15;
             // NOTE(unsafe) this reference will only be used for atomic writes with no side effects.
@@ -825,7 +854,7 @@ impl<PINS> Spi<SPI3, PINS> {
             bb::set(&rcc.apb1enr, EN_BIT);
         }
 
-        Spi { spi, pins }.init(mode, freq, clocks.pclk1())
+        Spi { spi, pins }.init(mode, freq, clocks.pclk1(), interface)
     }
 }
 
@@ -848,6 +877,12 @@ impl<PINS> Spi<SPI4, PINS> {
     where
         PINS: Pins<SPI4>,
     {
+        spi4_ext(spi, pins, mode, freq, clocks, SpiInterface::FullDuplex);
+    }
+    pub fn spi4_ext(spi: SPI4, pins: PINS, mode: Mode, freq: Hertz, clocks: Clocks, interface: SpiInterface) -> Self
+    where
+        PINS: Pins<SPI4>,
+    {
         unsafe {
             const EN_BIT: u8 = 13;
             // NOTE(unsafe) this reference will only be used for atomic writes with no side effects.
@@ -857,7 +892,7 @@ impl<PINS> Spi<SPI4, PINS> {
             bb::set(&rcc.apb2enr, EN_BIT);
         }
 
-        Spi { spi, pins }.init(mode, freq, clocks.pclk2())
+        Spi { spi, pins }.init(mode, freq, clocks.pclk2(), interface)
     }
 }
 
@@ -879,6 +914,12 @@ impl<PINS> Spi<SPI5, PINS> {
     where
         PINS: Pins<SPI5>,
     {
+        spi5_ext(spi, pins, mode, freq, clocks, SpiInterface::FullDuplex);
+    }
+    pub fn spi5_ext(spi: SPI5, pins: PINS, mode: Mode, freq: Hertz, clocks: Clocks, interface: SpiInterface) -> Self
+    where
+        PINS: Pins<SPI5>,
+    {
         unsafe {
             const EN_BIT: u8 = 20;
             // NOTE(unsafe) this reference will only be used for atomic writes with no side effects.
@@ -888,7 +929,7 @@ impl<PINS> Spi<SPI5, PINS> {
             bb::set(&rcc.apb2enr, EN_BIT);
         }
 
-        Spi { spi, pins }.init(mode, freq, clocks.pclk2())
+        Spi { spi, pins }.init(mode, freq, clocks.pclk2(), interface)
     }
 }
 
@@ -905,6 +946,12 @@ impl<PINS> Spi<SPI6, PINS> {
     where
         PINS: Pins<SPI6>,
     {
+        spi5_ext(spi, pins, mode, freq, clocks, SpiInterface::FullDuplex);
+    }
+    pub fn spi5_ext(spi: SPI6, pins: PINS, mode: Mode, freq: Hertz, clocks: Clocks, interface: SpiInterface) -> Self
+    where
+        PINS: Pins<SPI6>,
+    {
         unsafe {
             const EN_BIT: u8 = 21;
             // NOTE(unsafe) this reference will only be used for atomic writes with no side effects.
@@ -914,7 +961,7 @@ impl<PINS> Spi<SPI6, PINS> {
             bb::set(&rcc.apb2enr, EN_BIT);
         }
 
-        Spi { spi, pins }.init(mode, freq, clocks.pclk2())
+        Spi { spi, pins }.init(mode, freq, clocks.pclk2(), interface)
     }
 }
 
@@ -922,10 +969,10 @@ impl<SPI, PINS> Spi<SPI, PINS>
 where
     SPI: Deref<Target = spi1::RegisterBlock>,
 {
-    pub fn init(self, mode: Mode, freq: Hertz, clock: Hertz) -> Self {
+    pub fn init(self, mode: Mode, freq: Hertz, clock: Hertz, interface: SpiInterface) -> Self {
         // disable SS output
         self.spi.cr2.write(|w| w.ssoe().clear_bit());
-
+        
         let br = match clock.0 / freq.0 {
             0 => unreachable!(),
             1..=2 => 0b000,
@@ -961,11 +1008,11 @@ where
                 .ssi()
                 .set_bit()
                 .rxonly()
-                .clear_bit()
+                .bit(interface == SpiInterface::RxOnly)
                 .dff()
                 .clear_bit()
                 .bidimode()
-                .clear_bit()
+                .bit(interface == SpiInterface::BiDirectional)
                 .spe()
                 .set_bit()
         });
@@ -1034,7 +1081,7 @@ where
 
     fn read(&mut self) -> nb::Result<u8, Error> {
         let sr = self.spi.sr.read();
-
+        
         Err(if sr.ovr().bit_is_set() {
             nb::Error::Other(Error::Overrun)
         } else if sr.modf().bit_is_set() {
@@ -1044,6 +1091,8 @@ where
         } else if sr.rxne().bit_is_set() {
             // NOTE(read_volatile) read only 1 byte (the svd2rust API only allows
             // reading a half-word)
+            self.spi.cr1.write(|w| { w.bidioe().bit(false); });
+         
             return Ok(unsafe { ptr::read_volatile(&self.spi.dr as *const _ as *const u8) });
         } else {
             nb::Error::WouldBlock
@@ -1061,6 +1110,7 @@ where
             nb::Error::Other(Error::Crc)
         } else if sr.txe().bit_is_set() {
             // NOTE(write_volatile) see note above
+            self.spi.cr1.write(|w| { w.bidioe().bit(true); });
             unsafe { ptr::write_volatile(&self.spi.dr as *const _ as *mut u8, byte) }
             return Ok(());
         } else {
